@@ -1,21 +1,9 @@
 defmodule Sidekiq.Server do
   use GenServer.Behaviour
 
-  # ==========
-  # Public API
-  # ==========
-
   def start_link do
     :gen_server.start_link({ :local, :sidekiq }, __MODULE__, [], [])
   end
-
-  def enqueue(worker, args) do
-    :gen_server.call :sidekiq, { :enqueue, worker, args }
-  end
-
-  # ========================
-  # GenServer implementation
-  # ========================
 
   def init do
     :eredis.start_link

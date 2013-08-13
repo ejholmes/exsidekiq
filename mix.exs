@@ -10,7 +10,8 @@ defmodule Sidekiq.Mixfile do
 
   # Configuration for the OTP application
   def application do
-    [ applications: [ :eredis ] ]
+    [ applications: [ :eredis ],
+      mod: { Sidekiq, [] }]
   end
 
   # Returns the list of dependencies in the format:
