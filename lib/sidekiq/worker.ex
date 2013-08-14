@@ -7,7 +7,7 @@ defmodule Sidekiq.Worker do
 
   def enqueue(redis, worker, args // [], options // HashDict.new) do
     payload = payload worker, args, options
-    json    = encode { HashDict.to_list payload }
+    json    = encode { payload.to_list }
     q redis, ["LPUSH", queue_key(options[:queue]), json]
   end
 
