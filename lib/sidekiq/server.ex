@@ -2,7 +2,7 @@ defmodule Sidekiq.Server do
   use GenServer.Behaviour
 
   def start_link do
-    :gen_server.start_link({ :local, :sidekiq }, __MODULE__, [], [])
+    :gen_server.start_link({ :local, __MODULE__ }, __MODULE__, [], [])
   end
 
   def init(_args) do
@@ -10,19 +10,9 @@ defmodule Sidekiq.Server do
   end
 
   def handle_call({ :enqueue, worker, args, options }, _from, redis) do
-    enqueue(redis, worker, args, options)
-  end
-
-  def handle_call({ :enqueue, worker, args }, _from, redis) do
-    enqueue(redis, worker, args)
-  end
-
-  defp enqueue(redis, worker, args // [], options // []) do
-    queue = Keyword.get(options, :queue, "default")
-    json = :jiffy.encode { [queue: queue, class: worker, args: args] }
-    case :eredis.q(redis, ["LPUSH", "queue:#{queue}", json]) do
-      { :ok, _ } -> { :reply, :ok, redis }
-      _ret -> _ret
+    case Sidekiq.Worker.enqueue(redis, worker, args, options) do
+      { :ok, jobs } -> { :reply, { :ok, jobs }, redis }
+      error -> { :error, error, redis }
     end
   end
 end

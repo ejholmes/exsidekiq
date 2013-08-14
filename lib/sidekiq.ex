@@ -17,7 +17,7 @@ defmodule Sidekiq do
     Sidekiq.enqueue "DoWork", ["hello"], queue: "work"
 
   """
-  def enqueue(worker, args // [], options // []) do
-    :gen_server.call :sidekiq, { :enqueue, worker, args }
+  def enqueue(worker, args // [], options // HashDict.new) do
+    :gen_server.call Sidekiq.Server, { :enqueue, worker, args, options }
   end
 end
