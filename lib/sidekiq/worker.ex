@@ -3,7 +3,6 @@ defmodule Sidekiq.Worker do
   import :eredis, only: [q: 2]
 
   @default_queue "default"
-  @jid_length 12
 
   def enqueue(redis, worker, args \\ [], options \\ Map.new) do
     payload = payload worker, args, options
