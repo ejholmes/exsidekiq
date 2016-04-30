@@ -6,3 +6,5 @@ otp_release:
   - 18.2.1
 services:
   - redis-server
+before_script:
+  - redis-cli info
