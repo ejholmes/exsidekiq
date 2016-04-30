@@ -7,7 +7,7 @@ defmodule Sidekiq.Worker do
 
   def enqueue(redis, worker, args \\ [], options \\ Map.new) do
     payload = payload worker, args, options
-    json    = encode { payload.to_list }
+    json    = encode { Map.to_list(payload) }
     q redis, ["LPUSH", queue_key(options[:queue]), json]
   end
 
