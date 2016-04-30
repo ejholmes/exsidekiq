@@ -1,5 +1,5 @@
 defmodule Sidekiq.Supervisor do
-  use Supervisor.Behaviour
+  use Supervisor
 
   def start_link(args) do
     :supervisor.start_link(__MODULE__, args)

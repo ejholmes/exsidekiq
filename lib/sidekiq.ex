@@ -3,7 +3,7 @@ defmodule Sidekiq do
   This module provides an interface for enqueueing jobs in Sidekiq.
   """
 
-  use Application.Behaviour
+  use Application
 
   def start(_type, args \\ []) do
     Sidekiq.Supervisor.start_link args
