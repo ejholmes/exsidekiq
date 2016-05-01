@@ -3,8 +3,8 @@ defmodule Sidekiq.Mixfile do
 
   def project do
     [ app: :exsidekiq,
-      version: "0.0.1",
-      elixir: "~> 0.10.2-dev",
+      version: "0.0.2",
+      elixir: ">= 1.2.5",
       deps: deps ]
   end
 

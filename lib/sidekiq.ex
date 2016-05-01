@@ -3,9 +3,9 @@ defmodule Sidekiq do
   This module provides an interface for enqueueing jobs in Sidekiq.
   """
 
-  use Application.Behaviour
+  use Application
 
-  def start(_type, args // []) do
+  def start(_type, args \\ []) do
     Sidekiq.Supervisor.start_link args
   end
 
@@ -17,7 +17,7 @@ defmodule Sidekiq do
     Sidekiq.enqueue "DoWork", ["hello"], queue: "work"
 
   """
-  def enqueue(worker, args // [], options // HashDict.new) do
+  def enqueue(worker, args \\ [], options \\ Map.new) do
     :gen_server.call Sidekiq.Server, { :enqueue, worker, args, options }
   end
 end
