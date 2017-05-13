@@ -1,4 +1,6 @@
 defmodule Sidekiq.Worker do
+  @moduledoc false
+
   import :jiffy, only: [encode: 1]
   import :eredis, only: [q: 2]
 
@@ -6,15 +8,17 @@ defmodule Sidekiq.Worker do
 
   def enqueue(redis, worker, args \\ [], options \\ Map.new) do
     payload = payload worker, args, options
-    json    = encode { Map.to_list(payload) }
+    json = encode {Map.to_list(payload)}
     q redis, ["LPUSH", queue_key(options[:queue]), json]
   end
 
   defp payload(worker, args, options) do
-    payload_defaults(worker, args, options) |> Map.merge(Map.new(options))
+    worker
+    |> payload_defaults(args, options)
+    |> Map.merge(Map.new(options))
   end
 
-  defp payload_defaults(worker, args, options) do
+  defp payload_defaults(worker, args, _options) do
     Map.new [class: worker, args: args, queue: @default_queue]
   end
 
