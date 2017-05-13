@@ -1,28 +1,31 @@
 defmodule Sidekiq.Worker do
   @moduledoc false
 
-  import :jiffy, only: [encode: 1]
-  import :eredis, only: [q: 2]
-
   @default_queue "default"
 
   def enqueue(redis, worker, args \\ [], options \\ Map.new) do
-    payload = payload worker, args, options
-    json = encode {Map.to_list(payload)}
-    q redis, ["LPUSH", queue_key(options[:queue]), json]
+    Map.new
+    |> add_worker(worker)
+    |> add_args(args)
+    |> add_options(options)
+    |> commit(redis)
   end
 
-  defp payload(worker, args, options) do
-    worker
-    |> payload_defaults(args, options)
+  defp add_worker(message, worker_name), do: Map.put(message, :class, worker_name)
+  defp add_args(message, args), do: Map.put(message, :args, args)
+  defp add_options(message, options) do
+    [queue: @default_queue]
+    |> Map.new
+    |> Map.merge(message)
     |> Map.merge(Map.new(options))
   end
 
-  defp payload_defaults(worker, args, _options) do
-    Map.new [class: worker, args: args, queue: @default_queue]
+  defp commit(%{queue: queue} = message, conn) do
+    import :jiffy, only: [encode: 1]
+    import :eredis, only: [q: 2]
+
+    encoded_message = encode({Map.to_list(message)})
+    q(conn, ["LPUSH", "queue:#{queue}", encoded_message])
   end
 
-  defp queue_key(queue) do
-    "queue:#{queue}"
-  end
 end
