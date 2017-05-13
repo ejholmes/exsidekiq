@@ -8,7 +8,7 @@ defmodule Sidekiq.Supervisor do
   end
 
   def init(args) do
-    child_processes = [worker(Sidekiq.Server, args)]
-    supervise child_processes, strategy: :one_for_one
+    children = [worker(Sidekiq.Server, args)]
+    supervise(children, strategy: :one_for_one)
   end
 end
