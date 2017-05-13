@@ -4,7 +4,7 @@ defmodule Sidekiq.Supervisor do
   use Supervisor
 
   def start_link(args) do
-    :supervisor.start_link(__MODULE__, args)
+    Supervisor.start_link(__MODULE__, args)
   end
 
   def init(args) do

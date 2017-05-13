@@ -18,6 +18,6 @@ defmodule Sidekiq do
 
   """
   def enqueue(worker, args \\ [], options \\ Map.new) do
-    :gen_server.call Sidekiq.Server, {:enqueue, worker, args, options}
+    GenServer.call Sidekiq.Server, {:enqueue, worker, args, options}
   end
 end

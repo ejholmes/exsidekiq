@@ -6,7 +6,7 @@ defmodule Sidekiq.Server do
   alias Sidekiq.Worker
 
   def start_link do
-    :gen_server.start_link({:local, __MODULE__}, __MODULE__, [], [])
+    GenServer.start_link(__MODULE__, [], name: Sidekiq.Server)
   end
 
   def init(_args) do
