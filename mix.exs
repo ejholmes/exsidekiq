@@ -11,8 +11,8 @@ defmodule Sidekiq.Mixfile do
 
   defp deps do
     [
-      {:eredis, "~> 1.0"},
-      {:jiffy, "~> 0.14.11"}
+      {:eredis, "~> 1.1"},
+      {:jiffy, "~> 0.15.0"}
     ]
   end
 end
