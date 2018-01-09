@@ -12,8 +12,7 @@ defmodule Sidekiq.Mixfile do
   defp deps do
     [
       {:eredis, "~> 1.0"},
-      {:jiffy, "~> 0.14.11"},
-      {:credo, "~> 0.7.4", only: [:dev, :test], optional: true}
+      {:jiffy, "~> 0.14.11"}
     ]
   end
 end
