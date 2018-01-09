@@ -2,7 +2,7 @@ defmodule Sidekiq.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :exsidekiq, version: "0.0.2", elixir: ">= 1.2.5", deps: deps()]
+    [app: :exsidekiq, version: "0.0.3", elixir: ">= 1.2.5", deps: deps()]
   end
 
   def application do
