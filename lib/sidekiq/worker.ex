@@ -3,8 +3,8 @@ defmodule Sidekiq.Worker do
 
   @default_queue "default"
 
-  def enqueue(redis, worker, args \\ [], options \\ Map.new) do
-    Map.new
+  def enqueue(redis, worker, args \\ [], options \\ Map.new()) do
+    Map.new()
     |> add_worker(worker)
     |> add_args(args)
     |> add_options(options)
@@ -13,9 +13,10 @@ defmodule Sidekiq.Worker do
 
   defp add_worker(message, worker_name), do: Map.put(message, :class, worker_name)
   defp add_args(message, args), do: Map.put(message, :args, args)
+
   defp add_options(message, options) do
     [queue: @default_queue]
-    |> Map.new
+    |> Map.new()
     |> Map.merge(message)
     |> Map.merge(Map.new(options))
   end
@@ -27,5 +28,4 @@ defmodule Sidekiq.Worker do
     encoded_message = encode({Map.to_list(message)})
     q(conn, ["LPUSH", "queue:#{queue}", encoded_message])
   end
-
 end

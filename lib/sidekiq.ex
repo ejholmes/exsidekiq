@@ -6,7 +6,7 @@ defmodule Sidekiq do
   use Application
 
   def start(_type, args \\ []) do
-    Sidekiq.Supervisor.start_link args
+    Sidekiq.Supervisor.start_link(args)
   end
 
   @doc """
@@ -17,7 +17,7 @@ defmodule Sidekiq do
     Sidekiq.enqueue "DoWork", ["hello"], queue: "work"
 
   """
-  def enqueue(worker, args \\ [], options \\ Map.new) do
-    GenServer.call Sidekiq.Server, {:enqueue, worker, args, options}
+  def enqueue(worker, args \\ [], options \\ Map.new()) do
+    GenServer.call(Sidekiq.Server, {:enqueue, worker, args, options})
   end
 end

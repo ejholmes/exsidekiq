@@ -10,7 +10,7 @@ defmodule Sidekiq.Server do
   end
 
   def init(_args) do
-    :eredis.start_link
+    :eredis.start_link()
   end
 
   def handle_call({:enqueue, worker, args, options}, _from, redis) do
